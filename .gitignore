@@ -2,3 +2,7 @@ generated/
 dist/
 *.swp
 *.DS_Store
+generated/
+dist/
+*.swp
+*.DS_Store
