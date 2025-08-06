@@ -1,0 +1,6 @@
+{
+  vec v{3};
+  v = [1,2,3];
+  scl dp; dp = v @ v;
+  scl x;  x = v : 1;
+}

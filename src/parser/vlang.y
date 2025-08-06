@@ -12,6 +12,7 @@ extern int yylineno;
 
 %left '+' '-'
 %left '*' '/'
+%left '@' ':'   /* highest */
 
 %start Program
 
@@ -51,7 +52,21 @@ Exp       : INT_LIT
            | Exp '-' Exp
            | Exp '*' Exp
            | Exp '/' Exp
+           | Exp '@' Exp
+           | Exp ':' Exp
+           | VecLit
            ;
+
+VecLit    : '[' IntListOpt ']';
+
+IntListOpt
+          : /* empty */
+          | IntList
+          ;
+
+IntList   : INT_LIT
+          | IntList ',' INT_LIT
+          ;
 
 %%
 
