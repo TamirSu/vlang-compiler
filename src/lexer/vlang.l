@@ -31,8 +31,8 @@
 "[" { return '['; }
 "]" { return ']'; }
 "," { return ','; }
-"@" { return '@'; }
-":" { return ':'; }
+"@" { return '@'; }  /* dot product */
+":" { return ':'; }  /* index */
 
 .   { fprintf(stderr, "Unexpected character '%s' at line %d\n", yytext, yylineno); }
 %%
