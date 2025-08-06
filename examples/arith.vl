@@ -1,0 +1,4 @@
+{
+  scl a;
+  a = 2 + 3*4;   // should parse
+}
