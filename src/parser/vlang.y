@@ -1,59 +1,52 @@
 %{
 #include <stdio.h>
-void yyerror(const char *s);
+#include <stdlib.h>
 int yylex(void);
+void yyerror(const char *s);
 extern int yylineno;
 %}
 
-%token SCL VEC IF LOOP PRINT IDENT INT_LIT
+/* tokens */
+%token SCL VEC IF LOOP PRINT
+%token IDENT INT_LIT
 
-%left '+' '-'
-%left '*' '/'
-%left '@' ':'
+%start Program
 
 %%
-Program : Block ;
+Program    : Block ;
 
-Block : '{' StmtListOpt '}' ;
+Block      : '{' OptStmtList '}' ;
 
-StmtListOpt : /* empty */
-            | StmtList ;
+OptStmtList
+          : /* empty */
+          | StmtList
+          ;
 
-StmtList : Stmt
-         | StmtList Stmt ;
+StmtList  : Stmt
+          | StmtList Stmt
+          ;
 
-Stmt : Decl ';'
-     | Assign ';'
-     | If
-     | Loop
-     | Print ';' ;
+/* statements */
+Stmt      : ';'
+          | Decl ';'
+          | Assign ';'
+          ;
 
-Decl : SCL IDENT
-     | VEC IDENT '{' INT_LIT '}' ;
+/* declarations */
+Decl      : SCL IDENT
+          | VEC IDENT '{' INT_LIT '}'
+          ;
 
-Assign : IDENT '=' Exp ;
+/* assignment */
+Assign    : IDENT '=' Exp ;
 
-If : IF Exp Block ;
-
-Loop : LOOP Exp Block ;
-
-Print : PRINT ExpList ;
-
-ExpList : Exp
-        | ExpList ',' Exp ;
-
-Exp : INT_LIT
-    | IDENT
-    | '(' Exp ')'
-    | Exp '+' Exp
-    | Exp '-' Exp
-    | Exp '*' Exp
-    | Exp '/' Exp
-    | Exp '@' Exp
-    | Exp ':' Exp ;
+/* expressions (minimal for now) */
+Exp       : INT_LIT
+          | IDENT
+          ;
 
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Parse error: %s at line %d\n", s, yylineno);
+    fprintf(stderr, "syntax error: %s at line %d\n", s, yylineno);
 }
