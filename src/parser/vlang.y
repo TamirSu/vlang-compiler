@@ -12,7 +12,7 @@ extern int yylineno;
 
 %left '+' '-'
 %left '*' '/'
-%left '@' ':'   /* highest */
+%left '@' ':'   /* dot product and index, highest precedence */
 
 %start Program
 
@@ -52,8 +52,8 @@ Exp       : INT_LIT
            | Exp '-' Exp
            | Exp '*' Exp
            | Exp '/' Exp
-           | Exp '@' Exp
-           | Exp ':' Exp
+           | Exp '@' Exp   /* dot product */
+           | Exp ':' Exp   /* index */
            | VecLit
            ;
 
