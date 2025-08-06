@@ -7,7 +7,7 @@ extern int yylineno;
 %}
 
 /* tokens */
-%token SCL VEC IF LOOP PRINT
+%token SCL VEC PRINT IF LOOP STRING_LIT
 %token IDENT INT_LIT
 
 %left '+' '-'
@@ -34,7 +34,25 @@ StmtList  : Stmt
 Stmt      : ';'
           | Decl ';'
           | Assign ';'
+          | Print ';'
+          | If
+          | Loop
           ;
+
+Print     : PRINT STRING_LIT ':' PrintArgsOpt ;
+
+PrintArgsOpt
+          : /* empty */
+          | PrintArgs
+          ;
+
+PrintArgs : Exp
+          | PrintArgs ',' Exp
+          ;
+
+If        : IF Exp Block ;
+
+Loop      : LOOP Exp Block ;
 
 /* declarations */
 Decl      : SCL IDENT

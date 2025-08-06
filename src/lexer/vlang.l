@@ -15,6 +15,8 @@
 "loop"                  { return LOOP; }
 "print"                 { return PRINT; }
 
+\"[^\n"]*\"         { return STRING_LIT; }
+
 [A-Za-z_][A-Za-z0-9_]*  { if (yyleng > 32) { fprintf(stderr, "Identifier too long at line %d\n", yylineno); } return IDENT; }
 [0-9]+                  { return INT_LIT; }
 
