@@ -22,6 +22,12 @@
 "}" { return '}'; }
 ";" { return ';'; }
 "=" { return '='; }
+"(" { return '('; }
+")" { return ')'; }
+"+" { return '+'; }
+"-" { return '-'; }
+"*" { return '*'; }
+"/" { return '/'; }
 
 .   { fprintf(stderr, "Unexpected character '%s' at line %d\n", yytext, yylineno); }
 %%

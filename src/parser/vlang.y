@@ -10,6 +10,9 @@ extern int yylineno;
 %token SCL VEC IF LOOP PRINT
 %token IDENT INT_LIT
 
+%left '+' '-'
+%left '*' '/'
+
 %start Program
 
 %%
@@ -42,8 +45,13 @@ Assign    : IDENT '=' Exp ;
 
 /* expressions (minimal for now) */
 Exp       : INT_LIT
-          | IDENT
-          ;
+           | IDENT
+           | '(' Exp ')'
+           | Exp '+' Exp
+           | Exp '-' Exp
+           | Exp '*' Exp
+           | Exp '/' Exp
+           ;
 
 %%
 
