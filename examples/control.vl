@@ -1,0 +1,5 @@
+{
+  scl a; a = 1 + 2;
+  print "sum": a;
+  if a { loop 2 { a = a + 1; } }
+}
