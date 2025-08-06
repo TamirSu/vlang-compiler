@@ -1,4 +1,6 @@
+// should parse successfully
 {
-    scl a;
-    a = 5;
+  scl a;
+  vec v{3};
+  a = 5;
 }

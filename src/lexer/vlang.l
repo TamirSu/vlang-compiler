@@ -1,54 +1,27 @@
-%{
-#define _POSIX_C_SOURCE 200809L
-#include "vlang.tab.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-extern int fileno(FILE *);
-
-#define YY_NO_UNPUT
-#define YY_NO_INPUT
-
-void yyerror(const char *s);
-%}
-
 %option noyywrap nodefault yylineno
 
+%{
+#include "vlang.tab.h"
+#include <stdio.h>
+%}
+
 %%
-"scl"           { return SCL; }
-"vec"           { return VEC; }
-"if"            { return IF; }
-"loop"          { return LOOP; }
-"print"         { return PRINT; }
+[ \t\r\n]+             { /* skip spaces and newlines */ }
+"//"[^\n]*            { /* skip // comment */ }
 
-[0-9]+          { yylval = atoi(yytext); return INT_LIT; }
-[A-Za-z_][A-Za-z0-9_]* {
-                    if (yyleng > 32) {
-                        fprintf(stderr, "error: identifier '%s' too long at line %d\n", yytext, yylineno);
-                        exit(1);
-                    }
-                    yylval = 0; /* value unused for now */
-                    return IDENT;
-                  }
+"scl"                   { return SCL; }
+"vec"                   { return VEC; }
+"if"                    { return IF; }
+"loop"                  { return LOOP; }
+"print"                 { return PRINT; }
 
-"//"[^\n]*     ;
-[ \t\r\n]+     ;
+[A-Za-z_][A-Za-z0-9_]*  { if (yyleng > 32) { fprintf(stderr, "Identifier too long at line %d\n", yylineno); } return IDENT; }
+[0-9]+                  { return INT_LIT; }
 
-"{"            { return '{'; }
-"}"            { return '}'; }
-"("            { return '('; }
-")"            { return ')'; }
-";"            { return ';'; }
-","            { return ','; }
-"="            { return '='; }
-"@"            { return '@'; }
-":"            { return ':'; }
-"+"            { return '+'; }
-"-"            { return '-'; }
-"*"            { return '*'; }
-"/"            { return '/'; }
+"{" { return '{'; }
+"}" { return '}'; }
+";" { return ';'; }
+"=" { return '='; }
 
-.               { yyerror("unknown character"); }
-
+.   { fprintf(stderr, "Unexpected character '%s' at line %d\n", yytext, yylineno); }
 %%
